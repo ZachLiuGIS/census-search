@@ -1,9 +1,13 @@
 import React from 'react';
-import TimeBoxContainer from '../containers/TimeBoxContainer';
+import Header from './Header';
+import Sidebar from './Sidebar';
+import MapView from './MapView';
 
 const App = () => (
     <div>
-        <TimeBoxContainer/>
+        <Header/>
+        <Sidebar/>
+        <MapView/>
     </div>
 );
 
