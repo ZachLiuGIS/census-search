@@ -5,7 +5,6 @@ class MapView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.map = null;
     }
 
     componentWillMount() {
@@ -23,12 +22,11 @@ class MapView extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.map);
         this.map.setTarget('map');
     }
 
     componentWillUpdate() {
-        console.log(this.map)
+        console.log('map view update');
     }
 
     render() {

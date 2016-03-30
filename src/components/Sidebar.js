@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import SearchBoxContainer from '../containers/SearchBoxContainer';
 
 class Sidebar extends Component {
     render() {
         return (
             <div className="sidebar">
-                Sidebar
+                <SearchBoxContainer/>
             </div>
         )
     }

@@ -4,29 +4,24 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reducer from './reducers/reducer';
-import createLogger from 'redux-logger';
+import thunk from 'redux-thunk';
+import logger from 'redux-logger';
+import configureStore from './store/configureStore'
 
 import App from './components/App';
+import DevTools from './containers/DevTools';
 
-
-
-// This is required for hot module replacement!
-if (module.hot) {
-    module.hot.accept();
-}
+const store = configureStore();
 
 // get root element
 const root = document.getElementById('root');
 
-//create logger
-const logger = createLogger();
-
-// create store
-const store = createStore(reducer, applyMiddleware(logger));
-
 const AppContainer = () => (
     <Provider store={store}>
-        <App/>
+        <div>
+            <App/>
+            <DevTools />
+        </div>
     </Provider>
 );
 

@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import timeReducer from './timeReducer';
+import censusReducer from './censusReducer';
 
 const reducer = combineReducers({
-    time: timeReducer
+    census: censusReducer
 });
 
 export default reducer;

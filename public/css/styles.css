@@ -1,3 +1,4 @@
+
 /*header*/
 .main-header {
     z-index: 10;
@@ -12,6 +13,11 @@
     width: 400px;
     bottom: 0;
     z-index: 5;
+    padding: 15px;
+}
+
+.sidebar .row {
+    margin: 0;
 }
 
 
@@ -22,4 +28,17 @@
     left: 400px;
     right: 0;
     bottom: 0;
+}
+
+/*form*/
+.form-group {
+    margin-bottom: 10px;
+}
+
+.select-control {
+    margin-top: 6px;
+}
+
+.control-label {
+    /*text-align: right;*/
 }
