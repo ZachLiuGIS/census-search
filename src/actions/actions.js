@@ -32,7 +32,11 @@ export default {
                 level,
                 variables: [
                     'income',
-                    'population'
+                    'population',
+                    'median_home_value',
+                    'median_gross_rent',
+                    'poverty',
+                    'commute_time'
                 ]
             };
             console.log(request);

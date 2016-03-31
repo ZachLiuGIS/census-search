@@ -1,0 +1,7 @@
+{
+  "name": "react_auth",
+  "version": "0.0.1",
+  "dependencies": {
+    "loaders.css": "^0.1.2"
+  }
+}

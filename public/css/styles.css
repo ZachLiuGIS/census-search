@@ -25,12 +25,25 @@ body {
 }
 
 /*map*/
-#map {
+#map_container {
     position: absolute;
     top: 50px;
     left: 400px;
     right: 0;
     bottom: 0;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.map-loading {
+    position: absolute;
+    top: 48%;
+    left: 48%;
+    z-index: 5;
 }
 
 /*form*/
@@ -47,6 +60,11 @@ body {
 }
 
 /*infor panel*/
-.info-panel-row {
-    margin: 4px 0;
+.sidebar .info-panel-row {
+    margin: 5px 0;
+}
+
+/*loading*/
+.ball-spin-fade-loader > div {
+    background: #23b7e5;
 }
