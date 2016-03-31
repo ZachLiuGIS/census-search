@@ -8,11 +8,18 @@ class MapView extends React.Component {
     }
 
     componentWillMount() {
+        this.markerSource = new ol.source.Vector({});
+
+        this.markerLayer = new ol.layer.Vector({
+            source: this.markerSource
+        });
+
         this.map = new ol.Map({
             layers: [
                 new ol.layer.Tile({
                     source: new ol.source.OSM()
-                })
+                }),
+                this.markerLayer
             ],
             view: new ol.View({
                 center: ol.proj.fromLonLat([-95, 38]),
@@ -25,8 +32,20 @@ class MapView extends React.Component {
         this.map.setTarget('map');
     }
 
-    componentWillUpdate() {
+    componentWillUpdate(nextProps) {
         console.log('map view update');
+        const {lat, lng} = nextProps;
+        console.log(lng, lat);
+        let center = ol.proj.fromLonLat([lng, lat]);
+
+        let markerFeature = new ol.Feature({
+            geometry: new ol.geom.Point(center)
+        });
+
+        this.markerSource.clear();
+        this.markerSource.addFeature(markerFeature);
+
+        this.map.getView().setCenter(center);
     }
 
     render() {

@@ -1,13 +1,13 @@
 import React from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import MapView from './MapView';
+import MapViewContainer from '../containers/MapViewContainer';
 
 const App = () => (
     <div>
         <Header/>
         <Sidebar/>
-        <MapView/>
+        <MapViewContainer/>
     </div>
 );
 

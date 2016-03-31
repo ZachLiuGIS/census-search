@@ -2,8 +2,21 @@ import 'babel-polyfill';
 import update from 'react-addons-update';
 import actionTypes from '../constants/actionTypes';
 
+const processCensusApiResponse = (response) => {
+    return {
+        fullAddress: response.address.addressMatch.matchedAddress? response.address.addressMatch.matchedAddress
+            : response.address.street + ' ' + response.address.city + ' ' + response.address.state,
+        level: response.level,
+        lat: response.lat,
+        lng: response.lng,
+        street: response.address.street,
+        city: response.address.city,
+        state: response.address.state,
+        data: response.data[0]
+    }
+};
 
-const censusReducer = (state={options: {}, isFetching: false}, action) => {
+const censusReducer = (state={result: {data: {}}, isFetching: false}, action) => {
     switch (action.type) {
         case actionTypes.CENSUS_API_REQUEST:
             return update(state, {
@@ -12,7 +25,7 @@ const censusReducer = (state={options: {}, isFetching: false}, action) => {
             });
         case actionTypes.CENSUS_API_REQUEST_SUCCESS:
             return update(state, {
-                response: {$set: action.response},
+                result: {$set: processCensusApiResponse(action.response)},
                 isFetching: {$set: false}
             });
         default:
