@@ -11,6 +11,8 @@ class MapView extends React.Component {
     }
 
     componentWillMount() {
+        console.log('map will mount');
+
         // create a marker Vector Layer
         let iconStyle = new ol.style.Style({
             image: new ol.style.Icon({
@@ -29,10 +31,19 @@ class MapView extends React.Component {
             style: iconStyle
         });
 
+        // create geo json layer
+        let countrySource = new ol.source.Vector({
+            url: '../data/countries.geojson',
+            format: new ol.format.GeoJSON()
+        });
 
+        this.countryLayer = new ol.layer.Vector({
+            source: countrySource
+        });
     }
 
     componentDidMount() {
+        console.log('map did mount');
         // create an overlay, has to happen after div renders
         this.overlay = new ol.Overlay({
             position: mapConfig.center,
@@ -46,6 +57,7 @@ class MapView extends React.Component {
                 new ol.layer.Tile({
                     source: new ol.source.OSM()
                 }),
+                this.countryLayer,
                 this.markerLayer
             ],
             overlays: [this.overlay],
@@ -66,6 +78,7 @@ class MapView extends React.Component {
             const {lat, lng} = nextProps;
             let center = ol.proj.fromLonLat([lng, lat]);
 
+            // add marker
             let markerFeature = new ol.Feature({
                 geometry: new ol.geom.Point(center)
             });
@@ -73,7 +86,22 @@ class MapView extends React.Component {
             this.markerSource.clear();
             this.markerSource.addFeature(markerFeature);
 
+
+            // pan animation
+            var pan = ol.animation.pan({
+                source: this.map.getView().getCenter()
+            });
+            this.map.beforeRender(pan);
+
+            // set map center
             this.map.getView().setCenter(center);
+            this.map.getView().setZoom(6);
+
+            // add coordinates overlay
+            var hdms = ol.coordinate.toStringHDMS(center);
+            var element = this.overlay.getElement();
+            element.innerHTML = hdms;
+            this.overlay.setPosition(center);
         }
     }
 
