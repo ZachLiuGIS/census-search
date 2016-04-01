@@ -1,6 +1,7 @@
 import React from 'react';
 import ol from 'openlayers';
 import { mapConfig } from '../config/config';
+import { defaultStyle, selectStyle } from '../constants/mapStyles';
 import OverlayContainer from '../containers/ol/OverlayContainer';
 
 
@@ -38,7 +39,19 @@ class MapView extends React.Component {
         });
 
         this.countryLayer = new ol.layer.Vector({
-            source: countrySource
+            source: countrySource,
+            style: defaultStyle,
+            id: 'countries'
+        });
+
+        // create a selection interaction
+        this.selectInteraction = new ol.interaction.Select({
+            condition: ol.events.condition.singleClick,
+            toggleCondition: ol.events.condition.shiftKeyOnly,
+            layers: function (layer) {
+                return layer.get('id') == 'countries';
+            },
+            style: selectStyle
         });
     }
 
@@ -64,8 +77,13 @@ class MapView extends React.Component {
             view: new ol.View({
                 center: mapConfig.center,
                 zoom: 4
+            }),
+            controls: ol.control.defaults({
+                attribution: false
             })
         });
+
+        this.map.getInteractions().extend([this.selectInteraction]);
         console.log(this.map);
     }
 
@@ -85,7 +103,6 @@ class MapView extends React.Component {
 
             this.markerSource.clear();
             this.markerSource.addFeature(markerFeature);
-
 
             // pan animation
             var pan = ol.animation.pan({
