@@ -1,7 +1,7 @@
 import React from 'react';
-import ol from 'openlayers';
+//import ol from 'openlayers';
 import { mapConfig } from '../config/config';
-import { defaultStyle, selectStyle } from '../constants/mapStyles';
+import { defaultStyle, selectStyle, markerStyle, areaStyle } from '../constants/mapStyles';
 import OverlayContainer from '../containers/ol/OverlayContainer';
 
 
@@ -15,39 +15,19 @@ class MapView extends React.Component {
         console.log('map will mount');
 
         // create a marker Vector Layer
-        let iconStyle = new ol.style.Style({
-            image: new ol.style.Icon({
-                anchor: [0.5, 33],
-                anchorXUnits: 'fraction',
-                anchorYUnits: 'pixels',
-                opacity: 0.75,
-                src: '/icon/location_pin.png'
-            })
-        });
-
         this.markerSource = new ol.source.Vector({});
 
         this.markerLayer = new ol.layer.Vector({
             source: this.markerSource,
-            style: iconStyle
+            style: markerStyle
         });
 
         // create a boundary Vector Layer
-        this.boundarySource = new ol.source.Vector({
-            format: new ol.format.GeoJSON()
-        });
+        this.boundarySource = new ol.source.Vector({});
 
         this.boundaryLayer = new ol.layer.Vector({
             source: this.boundarySource,
-            style: new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: 'blue'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: 'olive',
-                    width: 1
-                })
-            })
+            style: areaStyle
         });
 
         // create geo json layer
@@ -104,6 +84,7 @@ class MapView extends React.Component {
 
         this.map.getInteractions().extend([this.selectInteraction]);
         console.log(this.map);
+        //console.log( this.boundaryLayer)
     }
 
     componentWillUpdate(nextProps) {
@@ -118,13 +99,11 @@ class MapView extends React.Component {
             let center = ol.proj.fromLonLat([lng, lat]);
 
             // add boundary
-            //let boundaryFeature = new ol.Feature({
-            //    geometry: nextProps.geoJson.geometry
-            //});
-            //
-            //this.boundarySource.clear();
-            console.log(nextProps.geoJson);
-            this.boundarySource.addFeatures((new ol.format.GeoJSON()).readFeatures(nextProps.geoJson));
+            this.boundarySource.clear();
+            this.boundarySource.addFeatures((new ol.format.GeoJSON()).readFeatures(nextProps.geoJson,{
+                dataProjection: 'EPSG:4326',
+                featureProjection: 'EPSG:3857'
+            }));
 
             // add marker
             let markerFeature = new ol.Feature({
@@ -149,6 +128,10 @@ class MapView extends React.Component {
             var element = this.overlay.getElement();
             element.innerHTML = hdms;
             this.overlay.setPosition(center);
+
+            console.log(this.boundarySource);
+            this.map.getView().fit(
+                this.boundarySource.getExtent(), (this.map.getSize()));
         }
     }
 
