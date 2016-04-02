@@ -43,14 +43,11 @@ export default {
             console.log(request);
             census.GEORequest(request, ((response) => {
                 console.log(response);
+                // for some reason I have to use a timeout here to make it work.
                 setTimeout(() => {
                     dispatch(this.censusApiRequestSuccess(options, response));
                 }, 200);
             }).bind(this));
-            //census.APIRequest(request, ((response) => {
-            //    console.log(response);
-            //    dispatch(this.censusApiRequestSuccess(options, response));
-            //}).bind(this));
         }
     }
 };

@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from 'react'
-import InfoPanelRow from './InfoPanelRow'
+import React, { Component, PropTypes } from 'react';
+import InfoTable from './InfoTable';
+import InfoPanelRow from './InfoPanelRow';
 import _ from 'lodash';
 import numeral from 'numeral';
 
@@ -21,14 +22,33 @@ class InfoPanel extends Component {
         const { properties } = this.props.geoJson.features[0];
         const options = this.props.options;
 
+        const data = [
+            {
+                name: "Population",
+                value: numeral(properties.population).format('0,0')
+            },
+            {
+                name: "Med House Income",
+                value: numeral(properties.income).format('0,0')
+            },
+            {
+                name: "Med Home Value",
+                value: numeral(properties.median_home_value).format('$ 0,0')
+            },
+            {
+                name: "Med Gross Rent",
+                value: numeral(properties.median_gross_rent).format('$ 0,0')
+            },
+            {
+                name: "Poverty Rate",
+                value: numeral((parseInt(properties.poverty) / parseInt(properties.population)).toString()).format('0.0%')
+            }
+        ];
+
         return (
             <div style={styles}>
-                <InfoPanelRow title="Stat Level: " content={options.level} />
-                <InfoPanelRow title="Population: " content={numeral(properties.population).format('0,0')} />
-                <InfoPanelRow title="Med House Income: " content={numeral(properties.income).format('$ 0,0')} />
-                <InfoPanelRow title="Med Home Value: " content={numeral(properties.median_home_value).format('$ 0,0')} />
-                <InfoPanelRow title="Med Gross Rent: " content={numeral(properties.median_gross_rent).format('$ 0,0')} />
-                <InfoPanelRow title="Poverty Rate: " content={numeral((parseInt(properties.poverty) / parseInt(properties.population)).toString()).format('0.0%')} />
+                <InfoPanelRow title="Stat Level:" content={options.level}/>
+                <InfoTable data={data}/>
             </div>
         )
     }
