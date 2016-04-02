@@ -16,7 +16,7 @@ const processCensusApiResponse = (response) => {
     }
 };
 
-const censusReducer = (state={result: {data: {}}, isFetching: false}, action) => {
+const censusReducer = (state={options: {}, geoJson: {}, isFetching: false}, action) => {
     switch (action.type) {
         case actionTypes.CENSUS_API_REQUEST:
             return update(state, {
@@ -25,7 +25,8 @@ const censusReducer = (state={result: {data: {}}, isFetching: false}, action) =>
             });
         case actionTypes.CENSUS_API_REQUEST_SUCCESS:
             return update(state, {
-                result: {$set: processCensusApiResponse(action.response)},
+                options: {$set: action.options},
+                geoJson: {$set: action.response},
                 isFetching: {$set: false}
             });
         default:

@@ -5,32 +5,38 @@ import numeral from 'numeral';
 
 class InfoPanel extends Component {
 
+    componentWillUpdate(nextProps) {
+        console.log('InfoPanel will update');
+        console.log(nextProps);
+    }
 
     render() {
         let styles;
         if (this.props.isFetching) {
             styles = {opacity: 0.4};
         }
-        if (_.isEmpty(this.props.result.data)) {
+        if (_.isEmpty(this.props.geoJson)) {
             return null;
         }
+        const { properties } = this.props.geoJson.features[0];
+        const options = this.props.options;
+
         return (
             <div style={styles}>
-                <InfoPanelRow title="Address: " content={this.props.result.fullAddress} />
-                <InfoPanelRow title="Stat Level: " content={this.props.result.level} />
-                <InfoPanelRow title="Population: " content={numeral(this.props.result.data.population).format('0,0')} />
-                <InfoPanelRow title="Med House Income: " content={numeral(this.props.result.data.income).format('$ 0,0')} />
-                <InfoPanelRow title="Med Home Value: " content={numeral(this.props.result.data.median_home_value).format('$ 0,0')} />
-                <InfoPanelRow title="Med Gross Rent: " content={numeral(this.props.result.data.median_gross_rent).format('$ 0,0')} />
-                <InfoPanelRow title="Poverty Rate: " content={
-                    numeral(this.props.result.data.poverty / this.props.result.data.population).format('0.0%')} />
+                <InfoPanelRow title="Stat Level: " content={options.level} />
+                <InfoPanelRow title="Population: " content={numeral(properties.population).format('0,0')} />
+                <InfoPanelRow title="Med House Income: " content={numeral(properties.income).format('$ 0,0')} />
+                <InfoPanelRow title="Med Home Value: " content={numeral(properties.median_home_value).format('$ 0,0')} />
+                <InfoPanelRow title="Med Gross Rent: " content={numeral(properties.median_gross_rent).format('$ 0,0')} />
+                <InfoPanelRow title="Poverty Rate: " content={numeral((parseInt(properties.poverty) / parseInt(properties.population)).toString()).format('0.0%')} />
             </div>
         )
     }
 }
 
 InfoPanel.propTypes = {
-    result: PropTypes.object.isRequired,
+    options: PropTypes.object.isRequired,
+    geoJson: PropTypes.object.isRequired,
     isFetching: PropTypes.bool.isRequired
 };
 

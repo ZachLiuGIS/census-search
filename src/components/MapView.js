@@ -32,6 +32,24 @@ class MapView extends React.Component {
             style: iconStyle
         });
 
+        // create a boundary Vector Layer
+        this.boundarySource = new ol.source.Vector({
+            format: new ol.format.GeoJSON()
+        });
+
+        this.boundaryLayer = new ol.layer.Vector({
+            source: this.boundarySource,
+            style: new ol.style.Style({
+                fill: new ol.style.Fill({
+                    color: 'blue'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'olive',
+                    width: 1
+                })
+            })
+        });
+
         // create geo json layer
         let countrySource = new ol.source.Vector({
             url: '../data/countries.geojson',
@@ -71,6 +89,7 @@ class MapView extends React.Component {
                     source: new ol.source.OSM()
                 }),
                 this.countryLayer,
+                this.boundaryLayer,
                 this.markerLayer
             ],
             overlays: [this.overlay],
@@ -93,8 +112,19 @@ class MapView extends React.Component {
         if (nextProps.isFetching) {
             this.markerSource.clear();
         } else {
-            const {lat, lng} = nextProps;
+            const properties = nextProps.geoJson.features[0].properties;
+            const lat = parseFloat(properties.CENTLAT);
+            const lng = parseFloat(properties.CENTLON);
             let center = ol.proj.fromLonLat([lng, lat]);
+
+            // add boundary
+            //let boundaryFeature = new ol.Feature({
+            //    geometry: nextProps.geoJson.geometry
+            //});
+            //
+            //this.boundarySource.clear();
+            console.log(nextProps.geoJson);
+            this.boundarySource.addFeatures((new ol.format.GeoJSON()).readFeatures(nextProps.geoJson));
 
             // add marker
             let markerFeature = new ol.Feature({
@@ -115,7 +145,7 @@ class MapView extends React.Component {
             this.map.getView().setZoom(6);
 
             // add coordinates overlay
-            var hdms = ol.coordinate.toStringHDMS(center);
+            var hdms = ol.coordinate.toStringHDMS([lng, lat]);
             var element = this.overlay.getElement();
             element.innerHTML = hdms;
             this.overlay.setPosition(center);

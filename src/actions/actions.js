@@ -12,6 +12,7 @@ export default {
     censusApiRequestSuccess(options, response) {
         return {
             type: actionTypes.CENSUS_API_REQUEST_SUCCESS,
+            options,
             response
         }
     },
@@ -40,9 +41,16 @@ export default {
                 ]
             };
             console.log(request);
-            census.APIRequest(request, ((response) => {
-                dispatch(this.censusApiRequestSuccess(options, response));
+            census.GEORequest(request, ((response) => {
+                console.log(response);
+                setTimeout(() => {
+                    dispatch(this.censusApiRequestSuccess(options, response));
+                }, 200);
             }).bind(this));
+            //census.APIRequest(request, ((response) => {
+            //    console.log(response);
+            //    dispatch(this.censusApiRequestSuccess(options, response));
+            //}).bind(this));
         }
     }
 };

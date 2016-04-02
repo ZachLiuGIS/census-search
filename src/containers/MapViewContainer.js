@@ -4,8 +4,8 @@ import MapView from '../components/MapView';
 
 const mapStateToProps = (state) => {
     return {
-        lat: state.census.result.lat,
-        lng: state.census.result.lng,
+        options: state.census.options,
+        geoJson: state.census.geoJson,
         isFetching: state.census.isFetching
     }
 };

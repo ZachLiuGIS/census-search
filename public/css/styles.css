@@ -46,6 +46,17 @@ body {
     z-index: 5;
 }
 
+/*overlay*/
+.overlay-coordinates {
+    background: #fafafa;
+    font-weight: bold;
+    padding: 5px;
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    border-radius:4px;
+}
+
+
 /*form*/
 .form-group {
     margin-bottom: 10px;

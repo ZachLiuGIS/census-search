@@ -4,7 +4,8 @@ import InfoPanel from '../components/InfoPanel';
 
 const mapStateToProps = (state) => {
     return {
-        result: state.census.result,
+        options: state.census.options,
+        geoJson: state.census.geoJson,
         isFetching: state.census.isFetching
     }
 };
