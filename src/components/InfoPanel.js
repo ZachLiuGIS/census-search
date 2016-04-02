@@ -29,7 +29,7 @@ class InfoPanel extends Component {
             },
             {
                 name: "Med House Income",
-                value: numeral(properties.income).format('0,0')
+                value: numeral(properties.income).format('$ 0,0')
             },
             {
                 name: "Med Home Value",
