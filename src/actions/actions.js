@@ -20,6 +20,7 @@ const censusApiRequestSuccess = (options, response) => {
 const censusApiRequestError = (options, error) =>{
     return {
         type: actionTypes.REQUEST_ERROR,
+        options,
         error
     }
 };
@@ -43,16 +44,30 @@ export default {
                 ]
             };
             console.log(request);
+            let success = false;
             census.GEORequest(request, ((response) => {
                 console.log(response);
+                success = true;
                 // for some reason I have to use a timeout here to make it work.
                 setTimeout(() => {
                     dispatch(censusApiRequestSuccess(options, response));
                 }, 200);
-            }).bind(this), (error) => {
-                console.log('request error');
-                console.log(error);
-            });
+            }));
+
+            // if 10 seconds and the request does not respond, stop the request and display error. The citySDK api
+            // does not have error handling callbacks, so this is the best method I found so far.
+            setTimeout(() => {
+                if (!success) {
+                    console.log('request failed');
+                    dispatch(censusApiRequestError(options, 'Search Failed. Please make sure input is valid and try again.'))
+                }
+            }, 10000);
+        }
+    },
+
+    resetError() {
+        return {
+            type: actionTypes.RESET_REQUEST_ERROR
         }
     }
 };

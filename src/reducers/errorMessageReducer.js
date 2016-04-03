@@ -5,7 +5,7 @@ const errorMessageReducer = (state = null, action) => {
 
     if (type === actionTypes.RESET_REQUEST_ERROR) {
         return null
-    } else if (error) {
+    } else if (type === actionTypes.REQUEST_ERROR) {
         return action.error
     }
     return state

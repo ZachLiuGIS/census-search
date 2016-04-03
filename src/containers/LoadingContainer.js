@@ -10,6 +10,10 @@ class Loading extends Component {
             left: '48%'
         };
 
+        if (this.props.error) {
+            return null;
+        }
+
         if (this.props.isFetching) {
             return (
                 <div style={styles}>
@@ -32,7 +36,8 @@ class Loading extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        isFetching: state.census.isFetching
+        isFetching: state.census.isFetching,
+        error: state.error
     }
 };
 

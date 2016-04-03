@@ -6,7 +6,8 @@ const mapStateToProps = (state) => {
     return {
         options: state.census.options,
         geoJson: state.census.geoJson,
-        isFetching: state.census.isFetching
+        isFetching: state.census.isFetching,
+        error: state.error
     }
 };
 

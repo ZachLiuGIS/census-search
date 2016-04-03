@@ -87,9 +87,10 @@ class MapView extends React.Component {
 
     componentWillUpdate(nextProps) {
         console.log('map view update');
-        if (nextProps.isFetching) {
+        if (nextProps.isFetching || nextProps.error) {
             this.markerSource.clear();
             this.boundarySource.clear();
+            this.overlay.setPosition(undefined);
         } else {
             const properties = nextProps.geoJson.features[0].properties;
             const lat = parseFloat(properties.CENTLAT);

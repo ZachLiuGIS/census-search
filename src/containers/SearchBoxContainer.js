@@ -12,6 +12,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onSearch: (options) => {
             console.log(options);
+            dispatch(actions.resetError());
             dispatch(actions.censusApiSearch(options));
         }
     }

@@ -13,6 +13,9 @@ class InfoPanel extends Component {
 
     render() {
         let styles;
+        if (this.props.error) {
+            return <div>{this.props.error}</div>
+        }
         if (this.props.isFetching) {
             styles = {opacity: 0.4};
         }
