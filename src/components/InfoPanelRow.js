@@ -17,4 +17,9 @@ class InfoPanelRow extends Component {
     }
 }
 
+InfoPanelRow.propTypes = {
+    title: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired
+};
+
 export default InfoPanelRow;

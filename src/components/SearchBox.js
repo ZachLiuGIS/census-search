@@ -60,4 +60,8 @@ class SearchBox extends Component {
     }
 }
 
+SearchBox.propTypes = {
+    onSearch: PropTypes.func.isRequired
+};
+
 export default SearchBox;

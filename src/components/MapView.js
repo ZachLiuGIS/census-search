@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {Component, PropTypes} from 'react';
 //import ol from 'openlayers';
 import { mapConfig } from '../config/config';
 import { defaultStyle, selectStyle, markerStyle, areaStyle, stateStyle } from '../constants/mapStyles';
 import OverlayContainer from '../containers/ol/OverlayContainer';
 
 
-class MapView extends React.Component {
+class MapView extends Component {
 
     constructor(props) {
         super(props);
@@ -18,6 +18,7 @@ class MapView extends React.Component {
         this.markerSource = new ol.source.Vector({});
 
         this.markerLayer = new ol.layer.Vector({
+            id: 'marker',
             source: this.markerSource,
             style: markerStyle
         });
@@ -39,7 +40,8 @@ class MapView extends React.Component {
 
         this.boundaryLayer = new ol.layer.Vector({
             source: this.boundarySource,
-            style: areaStyle
+            style: areaStyle,
+            id: 'result_boundary'
         });
 
         // create geo json layer
@@ -111,7 +113,7 @@ class MapView extends React.Component {
             let center = ol.proj.fromLonLat([lng, lat]);
 
             // add boundary
-            this.boundarySource.addFeatures((new ol.format.GeoJSON()).readFeatures(nextProps.geoJson,{
+            this.boundarySource.addFeatures((new ol.format.GeoJSON()).readFeatures(nextProps.geoJson, {
                 dataProjection: 'EPSG:4326',
                 featureProjection: 'EPSG:3857'
             }));
@@ -149,5 +151,10 @@ class MapView extends React.Component {
         )
     }
 }
+
+MapView.propTypes = {
+    geoJson: PropTypes.object.isRequired,
+    isFetching: PropTypes.bool.isRequired
+};
 
 export default MapView;
