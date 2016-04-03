@@ -57,7 +57,6 @@ class MapView extends React.Component {
         console.log('map did mount');
         // create an overlay, has to happen after div renders
         this.overlay = new ol.Overlay({
-            position: mapConfig.center,
             element: document.getElementById('overlay')
         });
 
@@ -84,14 +83,13 @@ class MapView extends React.Component {
 
         this.map.getInteractions().extend([this.selectInteraction]);
         console.log(this.map);
-        //console.log( this.boundaryLayer)
     }
 
     componentWillUpdate(nextProps) {
         console.log('map view update');
-        console.log(nextProps);
         if (nextProps.isFetching) {
             this.markerSource.clear();
+            this.boundarySource.clear();
         } else {
             const properties = nextProps.geoJson.features[0].properties;
             const lat = parseFloat(properties.CENTLAT);
@@ -99,18 +97,14 @@ class MapView extends React.Component {
             let center = ol.proj.fromLonLat([lng, lat]);
 
             // add boundary
-            this.boundarySource.clear();
             this.boundarySource.addFeatures((new ol.format.GeoJSON()).readFeatures(nextProps.geoJson,{
                 dataProjection: 'EPSG:4326',
                 featureProjection: 'EPSG:3857'
             }));
-
             // add marker
             let markerFeature = new ol.Feature({
                 geometry: new ol.geom.Point(center)
             });
-
-            this.markerSource.clear();
             this.markerSource.addFeature(markerFeature);
 
             // pan animation
@@ -129,7 +123,7 @@ class MapView extends React.Component {
             element.innerHTML = hdms;
             this.overlay.setPosition(center);
 
-            console.log(this.boundarySource);
+            // zoom to result extent
             this.map.getView().fit(
                 this.boundarySource.getExtent(), (this.map.getSize()));
         }

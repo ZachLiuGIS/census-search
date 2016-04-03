@@ -1,32 +1,34 @@
 import actionTypes from '../constants/actionTypes';
 import census from '../services/citysdk_api';
 
+
+const censusApiRequest = (options) => {
+    return {
+        type: actionTypes.CENSUS_API_REQUEST,
+        options
+    };
+};
+
+const censusApiRequestSuccess = (options, response) => {
+    return {
+        type: actionTypes.CENSUS_API_REQUEST_SUCCESS,
+        options,
+        response
+    }
+};
+
+const censusApiRequestError = (options, error) =>{
+    return {
+        type: actionTypes.REQUEST_ERROR,
+        error
+    }
+};
+
+
 export default {
-    censusApiRequest(options) {
-        return {
-            type: actionTypes.CENSUS_API_REQUEST,
-            options
-        };
-    },
-
-    censusApiRequestSuccess(options, response) {
-        return {
-            type: actionTypes.CENSUS_API_REQUEST_SUCCESS,
-            options,
-            response
-        }
-    },
-
-    censusApiRequestError(options, error) {
-        return {
-            type: actionTypes.CENSUS_API_REQUEST_ERROR,
-            error
-        }
-    },
-
     censusApiSearch(options) {
         return dispatch => {
-            dispatch(this.censusApiRequest(options));
+            dispatch(censusApiRequest(options));
             const { street, city, state, level } = options;
             const request = {
                 address: {street, city, state},
@@ -45,9 +47,12 @@ export default {
                 console.log(response);
                 // for some reason I have to use a timeout here to make it work.
                 setTimeout(() => {
-                    dispatch(this.censusApiRequestSuccess(options, response));
+                    dispatch(censusApiRequestSuccess(options, response));
                 }, 200);
-            }).bind(this));
+            }).bind(this), (error) => {
+                console.log('request error');
+                console.log(error);
+            });
         }
     }
 };

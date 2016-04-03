@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 class Overlay extends Component {
     render() {
-
         return (
             <div id="overlay" className="overlay overlay-coordinates"></div>
         )

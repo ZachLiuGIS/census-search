@@ -23,7 +23,7 @@ class InfoTable extends Component {
 }
 
 InfoTable.propTypes = {
-    data: PropTypes.object.isRequired
+    data: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default InfoTable;
