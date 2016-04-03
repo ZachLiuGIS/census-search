@@ -1,7 +1,7 @@
 import React from 'react';
 //import ol from 'openlayers';
 import { mapConfig } from '../config/config';
-import { defaultStyle, selectStyle, markerStyle, areaStyle } from '../constants/mapStyles';
+import { defaultStyle, selectStyle, markerStyle, areaStyle, stateStyle } from '../constants/mapStyles';
 import OverlayContainer from '../containers/ol/OverlayContainer';
 
 
@@ -20,6 +20,18 @@ class MapView extends React.Component {
         this.markerLayer = new ol.layer.Vector({
             source: this.markerSource,
             style: markerStyle
+        });
+
+        // add a wms layer
+        this.wmsLayer = new ol.layer.Tile({
+            title: 'US States',
+            source: new ol.source.TileWMS({
+                url: 'https://tigerweb.geo.census.gov/arcgis/services/TIGERweb/tigerWMS_ACS2015/MapServer/WmsServer',
+                params: {
+                    LAYERS: 'States',
+                    FORMAT: 'image/png'
+                }
+            })
         });
 
         // create a boundary Vector Layer
@@ -68,6 +80,7 @@ class MapView extends React.Component {
                     source: new ol.source.OSM()
                 }),
                 this.countryLayer,
+                this.wmsLayer,
                 this.boundaryLayer,
                 this.markerLayer
             ],

@@ -3,14 +3,14 @@
 export const selectStyle = new ol.style.Style({
     stroke: new ol.style.Stroke({
         color: '#ff0000',
-        width: 2
+        width: 1
     })
 });
 
 export const defaultStyle = new ol.style.Style({
     stroke: new ol.style.Stroke({
         color: '#0000ff',
-        width: 2
+        width: 1
     })
 });
 
@@ -31,5 +31,13 @@ export const areaStyle = new ol.style.Style({
     stroke: new ol.style.Stroke({
         color: '#0ff',
         width: 2
+    })
+});
+
+export const stateStyle = new ol.style.Style({
+
+    stroke: new ol.style.Stroke({
+        color: '#0000ff',
+        width: 1
     })
 });
